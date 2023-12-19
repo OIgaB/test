@@ -1,0 +1,1 @@
+// export { default as bulkCtrl } from './bulk.js';
