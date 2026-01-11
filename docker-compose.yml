@@ -1,0 +1,11 @@
+services:
+  test-back:
+    image: node:24.12.0
+    working_dir: /app
+    container_name: test-back
+    volumes:
+      - .:/app
+    ports:
+      - "4000:3000"
+    command: npm run start:dev
+    

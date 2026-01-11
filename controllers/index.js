@@ -1,1 +1,1 @@
-// export { default as bulkCtrl } from './bulk.js';
+export { default as filesCtrl } from './files-controller.js';

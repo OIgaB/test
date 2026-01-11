@@ -1,18 +1,21 @@
-import mongoose from 'mongoose';
-// import 'dotenv/config';
-import app from './app.js';
+import mongoose from "mongoose";
+import 'dotenv/config';
+import app from "./app.js";
 
 const { DB_HOST, PORT } = process.env;
 
-mongoose.set('strictQuery', true);
+mongoose.set("strictQuery", true);
 
-mongoose.connect(DB_HOST)  
+mongoose
+  .connect(DB_HOST)
   .then(() => {
-    app.listen((PORT), () => {  
-      console.log(`Database connection successful. Server running on port: ${PORT}`);
-    })    
+    app.listen(PORT, () => {
+      console.log(
+        `Database connection successful. Server running on port: ${PORT}`
+      );
+    });
   })
-  .catch(error => {
+  .catch((error) => {
     console.log(error.message);
-    process.exit(1);  
-  })
+    process.exit(1);
+  });

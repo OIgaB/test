@@ -10,10 +10,14 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./server.js",
-    "start:dev": "cross-env NODE_ENV=development nodemon ./server.js"
+    "start:dev": "cross-env NODE_ENV=development nodemon ./server.js",
+    "start:dev-prof": "cross-env NODE_ENV=development node --prof ./server.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.90.1",
+    "0x": "^6.0.0",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.3",
     "mongoose": "^8.0.0",

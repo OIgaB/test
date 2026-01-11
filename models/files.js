@@ -1,33 +1,38 @@
-import { Schema, model } from 'mongoose';
-import Joi from 'joi';
-// import { validateAtUpdate} from '../middlewares/validateAtUpdate.js'
-// import { handleMongooseError } from '../middlewares/handleMongooseError.js';
+import Joi from "joi";
+import { Schema, model } from "mongoose";
 
+import { validateAtUpdate} from '../middlewares/validateAtUpdate.js'
+import { handleMongooseError } from '../middlewares/handleMongooseError.js';
 
-const fileMongooseSchema = new Schema({  //mongoose-схема - перевіряє те, що передбачається внести до БД
-    file: {
-        name: String,
-        data: Buffer,
-        size: Number,
-        encoding: String,
-        mimetype: String,
+const fileMongooseSchema = new Schema(
+  {
+    fileName: {
+      type: String,
+      required: true,
     },
-}, { versionKey: false, timestamps: true });
+    supabasePath: {
+      type: String,
+      required: true,
+    },
+    fileURL: {
+      type: String,
+    },
+    size: Number,
+    mimetype: String,
+  },
+  { versionKey: false, timestamps: true }
+);
 
-// bulkSchema.pre("findOneAndUpdate", validateAtUpdate);
-// bulkSchema.post('save', handleMongooseError);
-// bulkSchema.post('findOneAndUpdate', handleMongooseError);
+fileMongooseSchema.pre("findOneAndUpdate", validateAtUpdate); // if update will be added 
+fileMongooseSchema.post('save', handleMongooseError);
+fileMongooseSchema.post('findOneAndUpdate', handleMongooseError); // if update will be added 
 
-console.log('in fileSchema');
+export const File = model("files", fileMongooseSchema);
 
 export const fileJoiSchema = Joi.object({
-    file: {
-        name: Joi.string().required(),
-        data: Joi.binary().required(),
-        size: Joi.number().required(),
-        encoding: Joi.string().required(),
-        mimetype: Joi.string().required(),        
-    }
+  fileName: Joi.string().required(),
+  supabasePath: Joi.string().required(),
+  fileURL: Joi.string().uri(),
+  size: Joi.number(),
+  mimetype: Joi.string(),
 });
-
-export const File = model('files', fileMongooseSchema); // створення нової колекції (назва 'files' з'явиться в БД)
