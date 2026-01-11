@@ -1,9 +1,11 @@
-import path from "path";
+import { performance } from "perf_hooks";
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 import { File, fileJoiSchema } from "../models/files.js";
 import { supabase } from "../utils/supabase.js";
 
 const addFile = async (req, res) => {
+  const start = performance.now();
+
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).json({ message: "No files were uploaded." });
   }
@@ -49,6 +51,9 @@ const addFile = async (req, res) => {
       message: "File uploaded successfully",
       result,
     });
+
+    const duration = performance.now() - start;
+    console.info(`Operation took ${duration.toFixed(2)} milliseconds`);
   } catch (e) {
     console.error("Upload error:", e);
     res.status(500).json({ message: e.message });
@@ -56,6 +61,7 @@ const addFile = async (req, res) => {
 };
 
 const deleteFile = async (req, res) => {
+  const start = performance.now();
   const { id } = req.params;
 
   try {
@@ -80,6 +86,9 @@ const deleteFile = async (req, res) => {
       message: "File and database record deleted successfully",
       deletedPath: fileRecord.supabasePath,
     });
+
+    const duration = performance.now() - start;
+    console.info(`Operation took ${duration.toFixed(2)} milliseconds`);
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
