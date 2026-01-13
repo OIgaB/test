@@ -36,7 +36,14 @@ The system follows a sequential pipeline to ensure data integrity:
 4.  **Database Persistence**: The backend saves the file metadata (name, cloud path, size, and URL) into **MongoDB**.
 
 
-### 2. Deletion Process (DELETE)
+### 2. Retrieval Process (GET)
+The system provides synchronized access to stored metadata:
+
+1.  **Database Query**: The backend fetches all files from **MongoDB**.
+2.  **Metadata Delivery**: The server returns a JSON array containing the file details and their corresponding URLs.
+
+
+### 3. Deletion Process (DELETE)
 The system follows a safe deletion order:
 
 1.  **Metadata Lookup**: The system fetches the `supabasePath` from MongoDB using the provided ID.
@@ -53,6 +60,7 @@ The system follows a safe deletion order:
 | Method | Endpoint | Description | Key Body/Params |
 | :--- | :--- | :--- | :--- |
 | **POST** | `/` | Upload a new file | `file` (Binary) |
+| **GET** | `/` | Get all files | - |
 | **DELETE** | `/:id` | Delete file from Cloud & DB | `id` (MongoID) |
 
 > **Note**: For private bucket, the `fileURL` returned by the database is a temporary **Signed URL**.
@@ -65,5 +73,8 @@ This project uses **0x** to generate Flamegraphs, ensuring that the file-handlin
 
 
 ```bash
-# To run profiling in PowerShell
+npx 0x -o server.js
+
+# For detailed function analysis run profiling in PowerShell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 npx 0x -o -- node --no-turbo-inlining server.js
