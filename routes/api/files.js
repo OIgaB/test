@@ -11,6 +11,7 @@ router.use(
   })
 );
 
+router.get("/", filesCtrl.getAllFiles);
 router.post("/", filesCtrl.addFile);
 router.delete("/:id", filesCtrl.deleteFile);
 

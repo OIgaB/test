@@ -3,6 +3,16 @@ import ctrlWrapper from "../decorators/ctrlWrapper.js";
 import { File, fileJoiSchema } from "../models/files.js";
 import { supabase } from "../utils/supabase.js";
 
+const getAllFiles = async (req, res) => {
+  try {
+    const result = await File.find();
+
+    res.status(200).json(result);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+};
+
 const addFile = async (req, res) => {
   const start = performance.now();
 
@@ -95,6 +105,7 @@ const deleteFile = async (req, res) => {
 };
 
 export default {
+  getAllFiles: ctrlWrapper(getAllFiles),
   addFile: ctrlWrapper(addFile),
   deleteFile: ctrlWrapper(deleteFile),
 };
